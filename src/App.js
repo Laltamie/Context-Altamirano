@@ -1,25 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer';
+import ItemListContainer from './components/ItemListContainer/ItemListContainer';
+import NavBar from './components/Navegador/NavBar';
+import Footer from './components/Footer/Footer';
+import CartProvider from './Context/CartContext';
+import Cart from './components/Cart/Cart';
+import Header from './components/Header/Header';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    <CartProvider>
+      <BrowserRouter>
+      <NavBar />
+          <Routes>
+            <Route path="/" element={<Header />}/>
+            <Route path="/categoria/:categoriaId" element={<ItemListContainer />} />
+            <Route path="/detalle/:detalleid" element={<ItemDetailContainer />} />
+            <Route path="/cart" element={<Cart />} />
+          </Routes>
+        <Footer />
+      </BrowserRouter>
+    </CartProvider>
+  )
 }
 
 export default App;
+
+// {<ItemListContainer />} 
