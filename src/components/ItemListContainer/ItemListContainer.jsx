@@ -4,14 +4,13 @@ import { useState } from "react";
 import ItemList from "../ItemList/ItemList";
 import "./ItemListContainer.css";
 import { useParams } from "react-router-dom";
-// import productos  from '../productos.js';
 import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
+
 
 
 const ItemListContainer = ({greeting}) => {
 
     const [data, setData] = useState([]);
-
     const {categoriaId} = useParams();
 
     useEffect(() => {
@@ -19,14 +18,11 @@ const ItemListContainer = ({greeting}) => {
         const db = getFirestore();
         const responsiveCollection = collection(db, 'items');
         
-        if(categoriaId){
-            const respFilter = query(responsiveCollection, where('categoria', '==', categoriaId))
-        getDocs(respFilter)
-            .then(res => setData(res.docs.map(producto => ({id: producto.id, ...producto.data()} ))) );
-        }else {
-            getDocs(responsiveCollection)
-            .then(res => setData(res.docs.map(producto => ({id: producto.id, ...producto.data()} ))) );
-        }      
+        const resFilter = categoriaId
+        ? query(responsiveCollection, where('categoria', '==', categoriaId))
+        : responsiveCollection;
+        
+        getDocs(resFilter).then(res => setData(res.docs.map(producto => ({id: producto.id, ...producto.data()} ))) );    
         
     }, [categoriaId])
 
